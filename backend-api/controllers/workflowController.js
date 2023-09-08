@@ -53,15 +53,15 @@ exports.apiDelete = function (req, res) {
     });
 };
 
-// exports.search = function (req, res) {
-//   Post.search(req.body.searchTerm)
-//     .then((posts) => {
-//       res.json(posts);
-//     })
-//     .catch((e) => {
-//       res.json([]);
-//     });
-// };
+exports.search = function (req, res) {
+  WorkFlow.search(req.workflow.searchTerm)
+    .then((workflows) => {
+      res.json(workflows);
+    })
+    .catch((e) => {
+      res.json([]);
+    });
+};
 
 exports.reactApiViewSingle = async function (req, res) {
   try {
