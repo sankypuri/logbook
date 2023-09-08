@@ -1,11 +1,11 @@
-//about us
+//about us is  temporary file
 import React, { useEffect } from "react";
 import Page from "./Page";
 
 function About() {
   return (
     <Page title="About Us">
-      <h2>About Us!!!!!!</h2>
+      <h2>About Us</h2>
       <p className="lead text-muted">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
         dolorum labore quisquam vel id dicta fuga! Ducimus, quo. Dolore commodi
