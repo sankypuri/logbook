@@ -42,7 +42,7 @@ exports.apiUpdate = function (req, res) {
       res.json("no permissions");
     });
 };
-// to delete single workflow
+// to delete single workflow uncommente by sanket
 exports.apiDelete = function (req, res) {
   WorkFlow.delete(req.params.id, req.apiUser._id)
     .then(() => {
