@@ -1,4 +1,4 @@
-//about us
+//about us is  temporary file
 import React, { useEffect } from "react";
 import Page from "./Page";
 
