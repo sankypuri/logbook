@@ -1,0 +1,5 @@
+DB - LogBook
+UserName - logbookadmin
+Password - admin12345
+
+mongodb+srv://logbookadmin:admin12345@cluster0.fzceftc.mongodb.net/LogBook?retryWrites=true&w=majority
