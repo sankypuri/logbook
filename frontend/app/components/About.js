@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 //about us is  temporary file
-import React, { useEffect } from "react";
-import Page from "./Page";
-//sanket is committing
-=======
-//about us is  temporary file by developer Faiz
 import React, { useEffect } from "react"
 import Page from "./Page"
 
->>>>>>> 673856292075d68a2ed32ee45ca3c554dd9ba2c3
 function About() {
   return (
     <Page title="About Us">
