@@ -25,8 +25,10 @@ import Search from "./components/Search";
 import Steps from "./components/Steps";
 import CreateWorkFlow from "./components/CreateWorkFlow";
 import WorkFlowList from "./components/WorkFlowList";
-import WorkFlows from "./components/WorkFlows";
+import ViewAllWorkFlows from "./components/ViewAllWorkFlows";
 import EditWorkFlow from "./components/EditWorkFlow";
+import CreateLogbook from "./components/CreateLogbook";
+import LogbookList from "./components/LogbookList";
 
 function Main() {
   const initialState = {
@@ -111,7 +113,7 @@ function Main() {
               <Route path="*" element={<NotFound />} />
               <Route
                 path="/profile/:username/task-builder/workflow"
-                element={<WorkFlows />}
+                element={<ViewAllWorkFlows />}
               />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />
               <Route
@@ -121,6 +123,16 @@ function Main() {
               <Route
                 path="/workflow/:id/edit"
                 element={state.loggedIn ? <EditWorkFlow /> : <HomeGuest />}
+              />
+              <Route
+                path="/workflow/:id"
+                element={state.loggedIn ? <WorkFlowList /> : <HomeGuest />}
+              />
+
+              <Route path="/create-logbook" element={<CreateLogbook />} />
+              <Route
+                path="/profile/:username/task-builder/logbook"
+                element={<LogbookList />}
               />
             </Routes>
           </div>

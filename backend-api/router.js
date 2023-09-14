@@ -5,6 +5,7 @@ const followController = require("./controllers/followController");
 const stepsController = require("./controllers/stepsController");
 const cors = require("cors");
 const workFlowController = require("./controllers/workflowController");
+const logbookController = require("./controllers/logbookController");
 
 apiRouter.use(cors());
 
@@ -121,5 +122,20 @@ apiRouter.post(
   "/workflow/:id/edit",
   userController.apiMustBeLoggedIn,
   workFlowController.apiUpdate
+);
+apiRouter.delete(
+  "/workflow/:id",
+  userController.apiMustBeLoggedIn,
+  workFlowController.apiDelete
+);
+apiRouter.post(
+  "/create-logbook",
+  userController.apiMustBeLoggedIn,
+  logbookController.apiCreate
+);
+apiRouter.get(
+  "/profile/:username/logbook",
+  userController.ifUserExists,
+  userController.apiGetLogbookByUsername
 );
 module.exports = apiRouter;

@@ -1,8 +1,8 @@
-const WorkFlow = require("../models/WorkFlow");
+const Logbook = require("../models/Logbook");
 
 exports.apiCreate = function (req, res) {
-  let workflow = new WorkFlow(req.body, req.apiUser._id);
-  workflow
+  let logbook = new Logbook(req.body, req.apiUser._id);
+  logbook
     .create()
     .then(function (newId) {
       res.json(newId);
@@ -14,8 +14,8 @@ exports.apiCreate = function (req, res) {
 };
 
 exports.apiUpdate = function (req, res) {
-  let workflow = new WorkFlow(req.body, req.apiUser._id, req.params.id);
-  workflow
+  let logbook = new Logbook(req.body, req.apiUser._id, req.params.id);
+  logbook
     .update()
     .then((status) => {
       // the post was successfully updated in the database
@@ -32,9 +32,9 @@ exports.apiUpdate = function (req, res) {
       res.json("no permissions");
     });
 };
-// to delete single workflow uncommente by sanket
+// to delete single logbook uncommente by sanket
 exports.apiDelete = function (req, res) {
-  WorkFlow.delete(req.params.id, req.apiUser._id)
+  Logbook.delete(req.params.id, req.apiUser._id)
     .then(() => {
       res.json("Success");
     })
@@ -44,7 +44,7 @@ exports.apiDelete = function (req, res) {
 };
 
 exports.search = function (req, res) {
-  WorkFlow.search(req.workflow.searchTerm)
+  Logbook.search(req.logbook.searchTerm)
     .then((workflows) => {
       res.json(workflows);
     })
@@ -55,8 +55,8 @@ exports.search = function (req, res) {
 
 exports.reactApiViewSingle = async function (req, res) {
   try {
-    let workflow = await WorkFlow.findSingleById(req.params.id, 0);
-    res.json(workflow);
+    let logbook = await Logbook.findSingleById(req.params.id, 0);
+    res.json(logbook);
   } catch (e) {
     res.json(false);
   }

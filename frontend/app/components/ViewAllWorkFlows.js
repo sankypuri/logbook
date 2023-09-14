@@ -1,13 +1,13 @@
 import React, { useEffect, useContext, useState } from "react";
 import Page from "./Page";
-import { useParams } from "react-router-dom";
+import { useLinkClickHandler, useParams } from "react-router-dom";
 //import { FormGrid } from "@formio/react";
 import Axios from "axios";
 import StateContext from "../StateContext";
 import WorkFlowList from "./WorkFlowList";
 import { Link } from "react-router-dom";
 
-function WorkFlows() {
+function ViewAllWorkFlows() {
   const { username } = useParams();
   const appState = useContext(StateContext);
   const [workflowData, setWorkflowData] = useState({
@@ -23,7 +23,7 @@ function WorkFlows() {
     async function fetchData() {
       try {
         const response = await Axios.post(
-          `/profile/${username}/workflow`,
+          `/profile/${username}`,
           { token: appState.user.token },
           { cancelToken: ourRequest.token }
         );
@@ -31,6 +31,7 @@ function WorkFlows() {
       } catch (e) {
         console.log("There was a problem at Workflow.js " + e);
       }
+      console.log(workflowData);
     }
     fetchData();
     return () => {
@@ -39,15 +40,19 @@ function WorkFlows() {
   }, []);
 
   return (
-    <Page title="WorkFlow Screen" wide={true}>
+    <div className="container" title="WorkFlow Screen">
       <p>Task Builder / WorkFlow</p>
-      <div className="row justify-content-between">
+      <div
+        className="row justify-content-between"
+        style={{ marginLeft: 20, marginRight: 20 }}
+      >
         <div className="col-4">
-          <h4>WorkFlows ({workflowData.counts.workflowCount})</h4>
+          <h4 className="underlinetext">
+            WorkFlows ({workflowData.counts.workflowCount})
+          </h4>
         </div>
         <div className="col- ml-auto">
-          <Link className="btn btn-sm btn-success mr-2" to="/create-workflow">
-            {" "}
+          <Link className="button" to="/create-workflow">
             Create New WorkFlow
           </Link>
         </div>
@@ -66,8 +71,8 @@ function WorkFlows() {
       </div>*/}
 
       <WorkFlowList />
-    </Page>
+    </div>
   );
 }
 
-export default WorkFlows;
+export default ViewAllWorkFlows;

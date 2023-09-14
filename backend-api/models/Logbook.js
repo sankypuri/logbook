@@ -1,23 +1,23 @@
 //const postsCollection = require("../db").db().collection("posts");
-const workflowCollection = require("../db").db().collection("workflow");
+const logbookCollection = require("../db").db().collection("logbook");
 //const followsCollection = require("../db").db().collection("follows");
 const ObjectID = require("mongodb").ObjectID;
 const User = require("./User");
 const sanitizeHTML = require("sanitize-html");
 
 //postsCollection.createIndex({ title: "text", body: "text" });
-workflowCollection.createIndex({ workflow: "text", description: "text" });
+logbookCollection.createIndex({ logbook: "text", description: "text" });
 
-let WorkFlow = function (data, userid, requestedWorkFlowId) {
+let Logbook = function (data, userid, requestedLogbookId) {
   this.data = data;
   this.errors = [];
   this.userid = userid;
-  this.requestedWorkFlowId = requestedWorkFlowId;
+  this.requestedLogbookId = requestedLogbookId;
 };
 
-WorkFlow.prototype.cleanUp = function () {
-  if (typeof this.data.workflow != "string") {
-    this.data.workflow = "";
+Logbook.prototype.cleanUp = function () {
+  if (typeof this.data.logbook != "string") {
+    this.data.logbook = "";
   }
   if (typeof this.data.description != "string") {
     this.data.description = "";
@@ -25,7 +25,7 @@ WorkFlow.prototype.cleanUp = function () {
 
   // get rid of any bogus properties
   this.data = {
-    workflow: sanitizeHTML(this.data.workflow.trim(), {
+    log: sanitizeHTML(this.data.logbook.trim(), {
       allowedTags: [],
       allowedAttributes: {},
     }),
@@ -36,14 +36,13 @@ WorkFlow.prototype.cleanUp = function () {
     createdDate: new Date(),
     author: ObjectID(this.userid),
     //description: this.data.description,
-    category: this.data.category,
-    approver1: this.data.approver1,
-    approver2: this.data.approver2,
+    asociatedWorkflow: this.data.asociatedWf,
+    asociatedStep: this.data.asociatedStp,
   };
 };
 
-WorkFlow.prototype.validate = function () {
-  if (this.data.workflow == "") {
+Logbook.prototype.validate = function () {
+  if (this.data.logbook == "") {
     this.errors.push("You must provide a title.");
   }
   if (this.data.description == "") {
@@ -51,14 +50,14 @@ WorkFlow.prototype.validate = function () {
   }
 };
 
-WorkFlow.prototype.create = function () {
+Logbook.prototype.create = function () {
   return new Promise((resolve, reject) => {
     this.cleanUp();
     this.validate();
     if (!this.errors.length) {
       // save post into database
 
-      workflowCollection
+      logbookCollection
         .insertOne(this.data)
         .then((info) => {
           resolve(info.insertedId);
@@ -74,14 +73,14 @@ WorkFlow.prototype.create = function () {
   });
 };
 
-WorkFlow.prototype.update = function () {
+Logbook.prototype.update = function () {
   return new Promise(async (resolve, reject) => {
     try {
-      let workflow = await WorkFlow.findSingleById(
+      let logbook = await Logbook.findSingleById(
         this.requestedWorkFlowId,
         this.userid
       );
-      if (workflow.isVisitorOwner) {
+      if (logbook.isVisitorOwner) {
         // actually update the db
         let status = await this.actuallyUpdate();
         resolve(status);
@@ -94,20 +93,19 @@ WorkFlow.prototype.update = function () {
   });
 };
 
-WorkFlow.prototype.actuallyUpdate = function () {
+Logbook.prototype.actuallyUpdate = function () {
   return new Promise(async (resolve, reject) => {
     // this.cleanUp();
     // this.validate();
     if (!this.errors.length) {
-      await workflowCollection.findOneAndUpdate(
+      await logbookCollection.findOneAndUpdate(
         { _id: new ObjectID(this.requestedWorkFlowId) },
         {
           $set: {
-            workflow: this.data.workflow,
+            logbook: this.data.logbook,
             description: this.data.description,
-            category: this.data.category,
-            approver1: this.data.approver1,
-            approver2: this.data.approver2,
+            asociatedWf: this.data.asociatedWf,
+            asociatedStp: this.data.asociatedStp,
           },
         }
       );
@@ -118,7 +116,7 @@ WorkFlow.prototype.actuallyUpdate = function () {
   });
 };
 
-WorkFlow.reusableWorkFlowQuery = function (
+Logbook.reusableLogbookQuery = function (
   uniqueOperations,
   visitorId,
   finalOperations = []
@@ -136,73 +134,72 @@ WorkFlow.reusableWorkFlowQuery = function (
         },
         {
           $project: {
-            workflow: 1,
+            logbook: 1,
             description: 1,
-            category: 1,
+            asociatedWorkflow: 1,
             authorId: "$author",
             author: { $arrayElemAt: ["$authorDocument", 0] },
-            approver1: 1,
-            approver2: 1,
+            asociatedStep: 1,
           },
         },
       ])
       .concat(finalOperations);
 
-    let workflows = await workflowCollection.aggregate(aggOperations).toArray();
+    let logbooks = await logbookCollection.aggregate(aggOperations).toArray();
 
     // clean up author property in each post object
-    workflows = workflows.map(function (workflow) {
-      workflow.isVisitorOwner = workflow.authorId.equals(visitorId);
-      workflow.authorId = undefined;
+    logbooks = logbooks.map(function (logbook) {
+      logbook.isVisitorOwner = logbook.authorId.equals(visitorId);
+      logbook.authorId = undefined;
 
-      workflow.author = {
-        username: workflow.author.username,
-        avatar: new User(workflow.author, true).avatar,
+      logbook.author = {
+        username: logbook.author.username,
+        avatar: new User(logbook.author, true).avatar,
       };
 
-      return workflow;
+      return logbook;
     });
 
-    resolve(workflows);
+    resolve(logbooks);
   });
 };
 
-WorkFlow.findSingleById = function (id, visitorId) {
+Logbook.findSingleById = function (id, visitorId) {
   return new Promise(async function (resolve, reject) {
     if (typeof id != "string" || !ObjectID.isValid(id)) {
       reject();
       return;
     }
 
-    let workflows = await WorkFlow.reusableWorkFlowQuery(
+    let logbooks = await Logbook.reusableLogbookQuery(
       [{ $match: { _id: new ObjectID(id) } }],
       visitorId
     );
 
-    if (workflows.length) {
-      resolve(workflows[0]);
+    if (logbooks.length) {
+      resolve(logbooks[0]);
     } else {
       reject();
     }
   });
 };
 
-WorkFlow.findByAuthorId = function (authorId) {
-  return WorkFlow.reusableWorkFlowQuery([
+Logbook.findByAuthorId = function (authorId) {
+  return Logbook.reusableLogbookQuery([
     { $match: { author: authorId } },
     { $sort: { createdDate: -1 } },
   ]);
 };
 
-WorkFlow.delete = function (workflowIdToDelete, currentUserId) {
+Logbook.delete = function (workflowIdToDelete, currentUserId) {
   return new Promise(async (resolve, reject) => {
     try {
-      let workflow = await WorkFlow.findSingleById(
+      let logbook = await Logbook.findSingleById(
         workflowIdToDelete,
         currentUserId
       );
-      if (workflow.isVisitorOwner) {
-        await workflowCollection.deleteOne({
+      if (logbook.isVisitorOwner) {
+        await logbookCollection.deleteOne({
           _id: new ObjectID(workflowIdToDelete),
         });
         resolve();
@@ -214,28 +211,28 @@ WorkFlow.delete = function (workflowIdToDelete, currentUserId) {
     }
   });
 };
-WorkFlow.search = function (searchTerm) {
+Logbook.search = function (searchTerm) {
   return new Promise(async (resolve, reject) => {
     if (typeof searchTerm == "string") {
-      let workflows = await WorkFlow.reusableWorkFlowQuery(
+      let logbooks = await Logbook.reusableLogbookQuery(
         [{ $match: { $text: { $search: searchTerm } } }],
         undefined,
         [{ $sort: { score: { $meta: "textScore" } } }]
       );
-      resolve(workflows);
+      resolve(logbooks);
     } else {
       reject();
     }
   });
 };
-WorkFlow.countWorkFlowByAuthor = function (id) {
+Logbook.countWorkFlowByAuthor = function (id) {
   return new Promise(async (resolve, reject) => {
-    let workflowCount = await workflowCollection.countDocuments({ author: id });
-    resolve(workflowCount);
+    let logbookCount = await logbookCollection.countDocuments({ author: id });
+    resolve(logbookCount);
   });
 };
 
-// WorkFlow.getFeed = async function (id) {
+// Logbook.getFeed = async function (id) {
 // //create an array of the user ids that the current user follows
 //   let followedUsers = await followsCollection
 //     .find({ authorId: new ObjectID(id) })
@@ -251,4 +248,4 @@ WorkFlow.countWorkFlowByAuthor = function (id) {
 //   ]);
 // };
 
-module.exports = WorkFlow;
+module.exports = Logbook;

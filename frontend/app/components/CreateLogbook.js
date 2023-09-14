@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { FormEdit } from "@formio/react";
 import { FormBuilder } from "@formio/react";
@@ -9,78 +9,112 @@ import Page from "./Page";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
+
 //import "../main.css";
 //import "../assets/css/workflow.css";
 
-function CreateWorkFlow(props) {
-  const [title, setTitle] = useState();
-  const [body, setBody] = useState();
-  const [tag, setTag] = useState();
-
-  const [workflow, setWorkFlow] = useState();
+function CreateLogbook(props) {
+  const [isLoading, setIsLoading] = useState(true);
+  const { username } = useParams();
+  const [workflowNamelist, setWorkFlowName] = useState([]);
+  const [setStepNamelist, setStepName] = useState([]);
+  //dropdown change catch
+  const [logbook, setLogbook] = useState();
   const [description, setDescription] = useState();
-  const [category, setCategory] = useState();
-  const [approver1, setApprover1] = useState();
-  const [approver2, setApprover2] = useState();
-  //const username = useState();
+  const [asociatedWf, setAsociatedWorkflow] = useState();
+  const [asociatedStp, setAsociatedSteps] = useState();
 
-  const [schema, setSchema] = useState();
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
 
   const handleDropdown1Change = (e) => {
-    setApprover1(e.target.value);
+    setAsociatedWorkflow(e.target.value);
   };
 
   const handleDropdown2Change = (e) => {
-    setApprover2(e.target.value);
+    setAsociatedSteps(e.target.value);
   };
 
   //Formio.use(bootstrap3);
   //Formio.Templates.framework = "bootstrap3";
   const options = [
     {
-      label: "CXO",
-      value: "cxo",
+      label: "Step1",
+      value: "Step1",
     },
     {
-      label: "FunctionHead",
-      value: "functionhead",
+      label: "Step2",
+      value: "Step2",
     },
     {
-      label: "SiteHead",
-      value: "sitehead",
+      label: "Step3",
+      value: "Step3",
     },
     {
-      label: "UnitHead",
-      value: "unithead",
+      label: "Step4",
+      value: "Step4",
     },
   ];
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("/create-workflow", {
+      const response = await Axios.post("/create-logbook", {
         token: appState.user.token,
-        workflow,
+        logbook,
         description,
-        category,
-        approver1,
-        approver2,
+        asociatedWf,
+        asociatedStp,
       });
       // Redirect to new post url
       appDispatch({
         type: "flashMessage",
-        value: "Congrats, you created a new post.",
+        value: "Congrats, you created a new logbook.",
       });
-      navigate(`/profile/${username}/task-builder/workflow`);
-      console.log("New post was created.");
+      // navigate(`/profile/${username}/task-builder/logbook`);
+      console.log("New logbook was created.");
     } catch (e) {
-      console.log("There was a problem.");
+      console.log("There was a problem in CreateLogbook.js.");
     }
     //alert("Clicked");
   }
 
+  useEffect(() => {
+    const ourRequest = Axios.CancelToken.source();
+    const ourRequest1 = Axios.CancelToken.source();
+    fetchWorkFlow(ourRequest);
+    fetchSteps(ourRequest1);
+    return () => {
+      ourRequest.cancel();
+      ourRequest1.cancel();
+    };
+  }, []);
+  async function fetchWorkFlow(ourRequest) {
+    try {
+      const response = await Axios.get(`/profile/test/workflow`, {
+        cancelToken: ourRequest.token,
+      });
+      setWorkFlowName(response.data);
+      setIsLoading(false);
+      //workflowlist = response.data;
+      console.log(response.data);
+    } catch (e) {
+      console.log("There was a problem : " + e);
+    }
+  }
+  async function fetchSteps(ourRequest1) {
+    try {
+      const response = await Axios.post(
+        `/profile/test/steps`,
+        { token: appState.user.token },
+        { cancelToken: ourRequest1.token }
+      );
+      setStepName(response.data);
+      console.log(response.data);
+    } catch (e) {
+      console.log("There was a problem at Steps.js " + e);
+    }
+  }
   return (
     <div className="container" title="WorkFlow Screen">
       <div className="mask d-flex align-items-center h-100 gradient-custom-3">
@@ -90,16 +124,16 @@ function CreateWorkFlow(props) {
               <div className="card" style={{ border: 15 }}>
                 <div className="card-body p-5">
                   <h2 className="text-uppercase text-center mb-5">
-                    Create workflow
+                    Create Logbook
                   </h2>
 
                   <form>
                     <div className="form-outline mb-4">
                       <label className="form-label" for="form3Example1cg">
-                        Workflow Name
+                        logbook Name
                       </label>
                       <input
-                        onChange={(e) => setWorkFlow(e.target.value)}
+                        onChange={(e) => setLogbook(e.target.value)}
                         autoFocus
                         name="workflow"
                         id="wf-name"
@@ -124,37 +158,25 @@ function CreateWorkFlow(props) {
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label className="form-label" for="form3Example4cg">
-                        Category
-                      </label>
-                      <input
-                        onChange={(e) => setCategory(e.target.value)}
-                        name="category"
-                        id="wf-category"
-                        className="body-content tall-textarea form-control"
-                        type="text"
-                        placeholder=""
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="form-outline mb-4">
                       <label className="form-label" for="form3Example4cdg">
-                        Approver1
-                      </label>
+                        Associated Workflow
+                      </label>{" "}
                       <select
                         id="Aprover1"
                         onChange={handleDropdown1Change}
                         selectedValue={props.selectedValue}
                       >
-                        {options.map((option) => (
-                          <option value={option.value}>{option.label}</option>
+                        {workflowNamelist.map((option) => (
+                          <option value={option.workflow}>
+                            {option.workflow}
+                          </option>
                         ))}
                       </select>
                     </div>
                     <div className="form-outline mb-4">
                       <label className="form-label" for="form3Example4cdg">
-                        Approver1
-                      </label>
+                        Associated Task Creation Step
+                      </label>{" "}
                       <select
                         id="Aprover2"
                         onChange={handleDropdown2Change}
@@ -171,7 +193,7 @@ function CreateWorkFlow(props) {
                         className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
                         onClick={handleSubmit}
                       >
-                        Save New Workflow
+                        Save New Logbook
                       </button>
                     </div>
                   </form>
@@ -185,4 +207,4 @@ function CreateWorkFlow(props) {
   );
 }
 
-export default CreateWorkFlow;
+export default CreateLogbook;
