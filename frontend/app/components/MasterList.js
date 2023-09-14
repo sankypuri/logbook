@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import UpdateForm from "./UpdateForm"
+import ReactTooltip from "react-tooltip"
+import { useParams, Link, useNavigate } from "react-router-dom"
 
 function MasterList() {
   const [masterData, setMasterData] = useState([])
@@ -44,16 +46,18 @@ function MasterList() {
 
   return (
     <div>
-      <table className="table">
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>ID </th>
-            <th>Category </th>
-            <th>Start Time </th>
-            <th>End Time </th>
-            <th>Value </th>
-            <th>Status </th>
-            <th>Subcategory </th>
+            <th scope="col">ID </th>
+            <th scope="col">Category </th>
+            <th scope="col">Start Time </th>
+            <th scope="col">End Time </th>
+            <th scope="col">Value </th>
+            <th scope="col">Status </th>
+            <th scope="col">Subcategory </th>
+            <th scope="col">Edit </th>
+            <th scope="col">Delete </th>
           </tr>
         </thead>
         <tbody>
@@ -67,12 +71,20 @@ function MasterList() {
               <td>{master.Status}</td>
               <td>{master.Subcategory}</td>
               <td>
-                <button onClick={() => handleUpdate(master)} className="btn btn-sm btn-success">
+                <Link onClick={() => handleUpdate(master)} data-tip="Edit" data-for="edit" className="bi bi-pencil"></Link>
+                <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+                {/* <button onClick={() => handleUpdate(master)} className="btn btn-sm btn-success">
                   Update
-                </button>
-                <button onClick={() => handleDelete(master._id)} className="btn btn-sm btn-red">
+                </button> */}
+                {/* <button onClick={() => handleDelete(master._id)} className="btn btn-sm btn-red">
                   Delete
-                </button>
+                </button> */}
+              </td>
+              <td>
+                <a onClick={() => handleDelete(master._id)} data-tip="Delete" data-for="delete" className="delete-post-button text-danger">
+                  <i className="fas fa-trash"></i>
+                </a>
+                <ReactTooltip id="delete" className="custom-tooltip" />
               </td>
             </tr>
           ))}
