@@ -3,6 +3,7 @@ const Steps = require("../models/Steps");
 const Workflow = require("../models/WorkFlow");
 const Follow = require("../models/Follow");
 const jwt = require("jsonwebtoken");
+const Logbook = require("../models/Logbook");
 
 // how long a token lasts before expiring
 const tokenLasts = "365d";
@@ -65,15 +66,21 @@ exports.sharedProfileData = async function (req, res, next) {
   );
 
   let stepCountPromise = Steps.countStepsByAuthor(req.profileUser._id);
+  let workflowCountPromise = Workflow.countWorkFlowByAuthor(
+    req.profileUser._id
+  );
   let followerCountPromise = Follow.countFollowersById(req.profileUser._id);
   let followingCountPromise = Follow.countFollowingById(req.profileUser._id);
-  let [stepCount, followerCount, followingCount] = await Promise.all([
-    stepCountPromise,
-    followerCountPromise,
-    followingCountPromise,
-  ]);
+  let [stepCount, workflowCount, followerCount, followingCount] =
+    await Promise.all([
+      stepCountPromise,
+      workflowCountPromise,
+      followerCountPromise,
+      followingCountPromise,
+    ]);
 
   req.stepCount = stepCount;
+  req.workflowCount = workflowCount;
   req.followerCount = followerCount;
   req.followingCount = followingCount;
 
@@ -155,6 +162,7 @@ exports.profileBasicData = function (req, res) {
     isFollowing: req.isFollowing,
     counts: {
       stepCount: req.stepCount,
+      workflowCount: req.workflowCount,
       followerCount: req.followerCount,
       followingCount: req.followingCount,
     },
@@ -187,6 +195,16 @@ exports.apiGetWorkflowByUsername = async function (req, res) {
     let workflows = await Workflow.findByAuthorId(authorDoc._id);
     //res.header("Cache-Control", "max-age=10").json(steps)
     res.json(workflows);
+  } catch (e) {
+    res.status(500).send("Sorry, invalid user requested.");
+  }
+};
+exports.apiGetLogbookByUsername = async function (req, res) {
+  try {
+    let authorDoc = await User.findByUsername(req.params.username);
+    let logbooks = await Logbook.findByAuthorId(authorDoc._id);
+    //res.header("Cache-Control", "max-age=10").json(steps)
+    res.json(logbooks);
   } catch (e) {
     res.status(500).send("Sorry, invalid user requested.");
   }

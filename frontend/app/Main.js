@@ -10,6 +10,7 @@ import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
 
 // My Components
+
 import Header from "./components/Header"
 import HomeGuest from "./components/HomeGuest"
 import Home from "./components/Home"
@@ -29,6 +30,27 @@ import WorkFlows from "./components/WorkFlows"
 import EditWorkFlow from "./components/EditWorkFlow"
 import MasterForm from "./components/MasterForm"
 import MasterList from "./components/MasterList"
+=======
+import Header from "./components/Header";
+import HomeGuest from "./components/HomeGuest";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
+import About from "./components/About";
+import Terms from "./components/Terms";
+import CreateStep from "./components/CreateStep";
+import ViewSingleStep from "./components/ViewSingleStep";
+import FlashMessages from "./components/FlashMessages";
+import EditStep from "./components/EditStep";
+import NotFound from "./components/NotFound";
+import Search from "./components/Search";
+import Steps from "./components/Steps";
+import CreateWorkFlow from "./components/CreateWorkFlow";
+import WorkFlowList from "./components/WorkFlowList";
+import ViewAllWorkFlows from "./components/ViewAllWorkFlows";
+import EditWorkFlow from "./components/EditWorkFlow";
+import CreateLogbook from "./components/CreateLogbook";
+import LogbookList from "./components/LogbookList";
+
 
 function Main() {
   const initialState = {
@@ -94,6 +116,7 @@ function Main() {
               <Route path="/about-us" element={<About />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="*" element={<NotFound />} />
+
               <Route path="/profile/:username/task-builder/workflow" element={<WorkFlows />} />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />
               <Route path="/profile/:username/task-builder/workflow" element={<WorkFlowList />} />
@@ -101,6 +124,31 @@ function Main() {
 
               <Route path="/master" element={state.loggedIn ? <MasterList /> : <HomeGuest />} />
               <Route path="/configuration/masterForm" element={state.loggedIn ? <MasterForm /> : <HomeGuest />} />
+
+              <Route
+                path="/profile/:username/task-builder/workflow"
+                element={<ViewAllWorkFlows />}
+              />
+              <Route path="/create-workflow" element={<CreateWorkFlow />} />
+              <Route
+                path="/profile/:username/task-builder/workflow"
+                element={<WorkFlowList />}
+              />
+              <Route
+                path="/workflow/:id/edit"
+                element={state.loggedIn ? <EditWorkFlow /> : <HomeGuest />}
+              />
+              <Route
+                path="/workflow/:id"
+                element={state.loggedIn ? <WorkFlowList /> : <HomeGuest />}
+              />
+
+              <Route path="/create-logbook" element={<CreateLogbook />} />
+              <Route
+                path="/profile/:username/task-builder/logbook"
+                element={<LogbookList />}
+              />
+
             </Routes>
           </div>
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>

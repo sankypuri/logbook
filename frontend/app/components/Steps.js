@@ -39,15 +39,19 @@ function Steps() {
   }, []);
 
   return (
-    <Page title="Steps Screen" wide={true}>
+    <div className="container" title="Steps Screen" wide={true}>
       <p>Task Builder / Steps</p>
-      <div className="row justify-content-between">
+      <div
+        className="row justify-content-between"
+        style={{ marginLeft: 20, marginRight: 20 }}
+      >
         <div className="col-4">
-          <h4>Steps ({profileData.counts.stepCount})</h4>
+          <h4 className="underlinetext">
+            Steps ({profileData.counts.stepCount})
+          </h4>
         </div>
         <div className="col- ml-auto">
-          <Link className="btn btn-sm btn-success mr-2" to="/create-step">
-            {" "}
+          <Link className="button" to="/create-step">
             Create New Step
           </Link>
         </div>
@@ -66,7 +70,7 @@ function Steps() {
       </div>*/}
 
       <ProfileSteps />
-    </Page>
+    </div>
   );
 }
 

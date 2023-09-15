@@ -1,3 +1,4 @@
+
 const apiRouter = require("express").Router()
 const userController = require("./controllers/userController")
 const postController = require("./controllers/postController")
@@ -6,6 +7,15 @@ const stepsController = require("./controllers/stepsController")
 const masterController = require("./controllers/masterController")
 const cors = require("cors")
 const workFlowController = require("./controllers/workflowController")
+const apiRouter = require("express").Router();
+const userController = require("./controllers/userController");
+const postController = require("./controllers/postController");
+const followController = require("./controllers/followController");
+const stepsController = require("./controllers/stepsController");
+const cors = require("cors");
+const workFlowController = require("./controllers/workflowController");
+const logbookController = require("./controllers/logbookController");
+
 
 apiRouter.use(cors())
 
@@ -64,6 +74,7 @@ apiRouter.delete("/step/:id", userController.apiMustBeLoggedIn, stepsController.
 apiRouter.post("/create-workflow", userController.apiMustBeLoggedIn, workFlowController.apiCreate)
 apiRouter.get("/workflow/:id", workFlowController.reactApiViewSingle)
 
+
 apiRouter.get("/profile/:username/workflow", userController.ifUserExists, userController.apiGetWorkflowByUsername)
 apiRouter.post("/workflow/:id/edit", userController.apiMustBeLoggedIn, workFlowController.apiUpdate)
 
@@ -74,3 +85,30 @@ apiRouter.delete("/delete-master-record/:id", masterController.deleteRecord)
 apiRouter.put("/master-update/:id", masterController.updateRecord)
 
 module.exports = apiRouter
+apiRouter.get(
+  "/profile/:username/workflow",
+  userController.ifUserExists,
+  userController.apiGetWorkflowByUsername
+);
+apiRouter.post(
+  "/workflow/:id/edit",
+  userController.apiMustBeLoggedIn,
+  workFlowController.apiUpdate
+);
+apiRouter.delete(
+  "/workflow/:id",
+  userController.apiMustBeLoggedIn,
+  workFlowController.apiDelete
+);
+apiRouter.post(
+  "/create-logbook",
+  userController.apiMustBeLoggedIn,
+  logbookController.apiCreate
+);
+apiRouter.get(
+  "/profile/:username/logbook",
+  userController.ifUserExists,
+  userController.apiGetLogbookByUsername
+);
+module.exports = apiRouter;
+
