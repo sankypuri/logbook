@@ -29,6 +29,7 @@ import WorkFlows from "./components/WorkFlows"
 import EditWorkFlow from "./components/EditWorkFlow"
 import MasterForm from "./components/MasterForm"
 import MasterList from "./components/MasterList"
+import CreateSites from "./components/CreateSites"
 
 function Main() {
   const initialState = {
@@ -101,6 +102,7 @@ function Main() {
 
               <Route path="/master" element={state.loggedIn ? <MasterList /> : <HomeGuest />} />
               <Route path="/configuration/masterForm" element={state.loggedIn ? <MasterForm /> : <HomeGuest />} />
+              <Route path="/configuration/create-site" element={state.loggedIn ? <CreateSites /> : <HomeGuest />} />
             </Routes>
           </div>
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>

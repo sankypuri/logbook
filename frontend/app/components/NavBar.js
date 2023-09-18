@@ -43,6 +43,40 @@ const Navbar = () => {
         },
       ],
     },
+
+    {
+      title: "Configure Masters",
+      icon: "bi bi-gear", //"../public/img/climb-arrow-light-48.png",
+      id: 2,
+      url: "/master-configure",
+      childrens: [
+        {
+          title: "Site",
+          url: "/profile/username/master-configure/site",
+          icon: "bi bi-building",
+        },
+        {
+          title: "Plant",
+          url: "/profile/username/master-configure/plant",
+          icon: "bi bi-house",
+        },
+        {
+          title: "Area",
+          url: "/profile/username/master-configure/area",
+          icon: "bi bi-map",
+        },
+        {
+          title: "Line",
+          url: "/profile/username/master-configure/line",
+          icon: "bi bi-list-nested",
+        },
+        {
+          title: "Equipment",
+          url: "/profile/username/master-configure/equipment",
+          icon: "bi bi-boxes",
+        },
+      ],
+    },
   ]
 
   return (
