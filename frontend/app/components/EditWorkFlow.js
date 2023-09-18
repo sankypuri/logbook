@@ -93,19 +93,19 @@ function EditWorkFlow(props) {
         return;
       case "descriptionChange":
         draft.description.hasErrors = false;
-        draft.description.value = action.description;
+        draft.description.value = action.value;
         return;
       case "categoryChange":
         draft.category.hasErrors = false;
-        draft.category.value = action.category;
+        draft.category.value = action.value;
         return;
       case "approver1Change":
         draft.approver1.hasErrors = false;
-        draft.approver1.value = action.approver1;
+        draft.approver1.value = action.value;
         return;
       case "approver2Change":
         draft.approver2.hasErrors = false;
-        draft.approver2.value = action.approver2;
+        draft.approver2.value = action.value;
         return;
       case "submitRequest":
         if (
@@ -259,10 +259,10 @@ function EditWorkFlow(props) {
   //console.log(newVariable.components[0].id);
 
   return (
-    <Page title="Edit Step" wide={true}>
+    <Page title="Edit WorkFlow" wide={true}>
       <Link
         className="small font-weight-bold"
-        to={`/profile/username/task-builder/workflow`}
+        to={`/profile/test/task-builder/workflow`}
       >
         &laquo; Back to workflow permalink
       </Link>

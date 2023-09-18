@@ -17,10 +17,97 @@ body {
 .container--narrow {
   max-width: 732px;
 }
+/* sanket adding additional Css for customise UI */
+.container {
+  max-width: 100%;
+}
 
+.tablehead th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
+
+.button {
+  background-color: #36a9ae;
+  background-image: linear-gradient(#37adb2, #329ca0);
+  border: 1px solid #2a8387;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 1px;
+  color: #ffffff;
+  cursor: pointer;
+  display: block;
+  font-family: -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  font-family: bold;
+  line-height: 100%;
+  margin: 0;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  outline: 0;
+  padding: 11px 15px 12px;
+  text-align: center;
+  transition: box-shadow 0.05s ease-in-out, opacity 0.05s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+.gradient-custom-3 {
+  /* fallback for old browsers */
+  background: #84fab0;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(132, 250, 176, 0.5),
+    rgba(143, 211, 244, 0.5)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    rgba(132, 250, 176, 0.5),
+    rgba(143, 211, 244, 0.5)
+  );
+}
+.gradient-custom-4 {
+  /* fallback for old browsers */
+  background: #84fab0;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(132, 250, 176, 1),
+    rgba(143, 211, 244, 1)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    rgba(132, 250, 176, 1),
+    rgba(143, 211, 244, 1)
+  );
+}
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+  font-size: 1rem;
+  line-height: 2.15;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+.card-registration .select-arrow {
+  top: 13px;
+}
 .header-search-icon {
   position: relative;
   top: 3px;
+}
+.underlinetext {
+  color: rgb(117, 32, 34);
+  text-decoration: underline;
 }
 
 .header-chat-icon {
