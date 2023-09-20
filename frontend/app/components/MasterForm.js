@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Axios from "axios"
+import DispatchContext from "../DispatchContext"
+import { useNavigate } from "react-router-dom"
 
 function MasterForm() {
   const [category, setCategory] = useState()
@@ -7,6 +9,8 @@ function MasterForm() {
   const [masterId, setMasterId] = useState()
   const [startTime, setStartTime] = useState()
   const [endTime, setEndTime] = useState()
+  const navigate = useNavigate()
+  const appDispatch = useContext(DispatchContext)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -20,6 +24,12 @@ function MasterForm() {
       }
       const response = await Axios.post("/masterEntry", data)
       if (response.status == 200) console.log("Form Submitted Successfully.")
+
+      appDispatch({
+        type: "flashMessage",
+        value: response,
+      })
+      navigate("/master")
     } catch (e) {
       console.error("Error submitting form: ", e)
     }

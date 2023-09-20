@@ -23,7 +23,7 @@ function UpdateForm({ master, onUpdate, onCancel }) {
   }
 
   return (
-    <div className="overlay container">
+    <div className="form-overlay container">
       <h2>Update Record</h2>
       <form onSubmit={handleSubmit}>
         {/* Create form inputs for each field, prefill with existing data */}

@@ -6,7 +6,7 @@ import DispatchContext from "../DispatchContext"
 import StateContext from "../StateContext"
 
 function CreateSites(props) {
-  const [site, setSite] = useState()
+  const [siteName, setSiteName] = useState()
   const [description, setDescription] = useState()
   const navigate = useNavigate()
   const appDispatch = useContext(DispatchContext)
@@ -16,16 +16,16 @@ function CreateSites(props) {
     e.preventDefault()
     try {
       const response = await Axios.post("/create-site", {
-        site,
+        siteName,
         description,
         type: "site",
       })
 
       appDispatch({
         type: "flashMessage",
-        value: "Congrats, you created a new site.",
+        value: response,
       })
-      navigate("/master-configure/site")
+      navigate("/configuration/sites")
       console.log("New site was created.")
     } catch (e) {
       console.log("There was a problem while creating site: " + e)
@@ -41,7 +41,7 @@ function CreateSites(props) {
               <label htmlFor="step-title" className="text-muted mb-1">
                 <small>Site</small>
               </label>
-              <input onChange={(e) => setSite(e.target.value)} autoFocus name="site" id="site-name" className="body-content tall-textarea form-control" type="text" placeholder="" autoComplete="off" />
+              <input onChange={(e) => setSiteName(e.target.value)} autoFocus name="site" id="site-name" className="body-content tall-textarea form-control" type="text" placeholder="" autoComplete="off" />
             </div>
             <div className="col">
               <label htmlFor="step-body" className="text-muted mb-1 d-block">

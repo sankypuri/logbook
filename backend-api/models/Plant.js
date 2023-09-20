@@ -1,8 +1,8 @@
-const siteCollection = require("../db").db().collection("sites")
+const plantCollection = require("../db").db().collection("plants")
 const ObjectId = require("mongodb").ObjectId
-siteCollection.createIndex({ siteName: "text", description: "text" })
+// plantCollection.createIndex({ siteName: "text", description: "text" })
 
-class Site {
+class Plant {
   constructor(data) {
     this.data = data
     this.errors = []
@@ -15,36 +15,46 @@ class Site {
           {
             $project: {
               _id: 1,
-              siteName: 1,
+              plantName: 1,
               description: 1,
               type: 1,
+              parentSiteName: 1,
+              parentSiteId: 1,
             },
           },
         ])
         .concat(finalOperations)
 
-      let sites = await siteCollection.aggregate(aggOperations).toArray()
-      sites = sites.map(function (site) {
-        return site
+      let plants = await plantCollection.aggregate(aggOperations).toArray()
+      plants = plants.map(function (plant) {
+        return plant
       })
 
-      resolve(sites)
+      resolve(plants)
     })
   }
 
   cleanUp() {
-    if (typeof this.data.siteName != "string") {
-      this.data.siteName = ""
+    if (typeof this.data.plantName != "string") {
+      this.data.plantName = ""
     }
     if (typeof this.data.description != "string") {
       this.data.description = ""
     }
+    if (typeof this.data.parentSiteName != "string") {
+      this.data.parentSiteName = ""
+    }
+    if (typeof this.data.parentSiteId != "string") {
+      this.data.parentSiteId = ""
+    }
 
     // get rid of any bogus properties
     this.data = {
-      siteName: this.data.siteName,
-      type: "site",
+      plantName: this.data.plantName,
+      type: "plant",
       description: this.data.description,
+      parentSiteName: this.data.parentSiteName,
+      parentSiteId: new ObjectId(this.data.parentSiteId),
     }
   }
 
@@ -54,14 +64,18 @@ class Site {
 
   validate() {
     return new Promise(async (resolve, reject) => {
-      if (this.data.siteName == "") {
-        this.errors.push("You must provide a site name.")
+      if (this.data.plantName == "") {
+        this.errors.push("You must provide a plant name.")
+        // reject()
+      }
+      if (this.data.parentSiteName == "") {
+        this.errors.push("You must select a site.")
         // reject()
       }
 
-      let entryExist = await siteCollection.findOne({ siteName: this.data.siteName })
+      let entryExist = await plantCollection.findOne({ plantName: this.data.plantName })
       if (entryExist) {
-        this.errors.push("This site already exists.")
+        this.errors.push("This plant already exists.")
         // reject()
       }
       console.log(this.errors)
@@ -78,7 +92,7 @@ class Site {
       if (!this.errors.length) {
         console.log(this.errors.length)
         // save post into database
-        siteCollection
+        plantCollection
           .insertOne(this.data)
           .then((info) => {
             resolve(info.insertedId)
@@ -113,7 +127,7 @@ class Site {
   static delete(siteIdToDelete) {
     return new Promise(async (resolve, reject) => {
       try {
-        await siteCollection.deleteOne({ _id: new ObjectId(siteIdToDelete) })
+        await plantCollection.deleteOne({ _id: new ObjectId(siteIdToDelete) })
         resolve()
       } catch (e) {
         reject()
@@ -127,7 +141,7 @@ class Site {
         // console.log("ID to update: " + masterIdToUpdate)
         // console.log("Data To Update: " + newData.ID + ", " + newData.Category + ", " + newData.Subcategory)
 
-        const updatedSite = await siteCollection.findOneAndUpdate(
+        const updatedSite = await plantCollection.findOneAndUpdate(
           { _id: new ObjectId(siteIdToUpdate) },
           {
             $set: {
@@ -156,4 +170,4 @@ class Site {
   }
 }
 
-module.exports = Site
+module.exports = Plant

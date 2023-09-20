@@ -19,7 +19,7 @@ exports.getData = async function (req, res) {
     let masterData = await Master.getData()
 
     res.json(masterData)
-    console.log("In geData() function: " + masterData)
+    // console.log("In geData() function: " + masterData)
   } catch (err) {
     res.status(500).json({ error: err.message })
     // console.log(err.message)

@@ -5,14 +5,10 @@ const followController = require("./controllers/followController")
 const stepsController = require("./controllers/stepsController")
 const masterController = require("./controllers/masterController")
 const siteController = require("./controllers/siteController")
+const plantController = require("./controllers/plantController")
 const cors = require("cors")
 const workFlowController = require("./controllers/workflowController")
-const userController = require("./controllers/userController")
-const postController = require("./controllers/postController")
-const followController = require("./controllers/followController")
-const stepsController = require("./controllers/stepsController")
-const cors = require("cors")
-const workFlowController = require("./controllers/workflowController")
+
 const logbookController = require("./controllers/logbookController")
 
 apiRouter.use(cors())
@@ -83,6 +79,12 @@ apiRouter.put("/master-update/:id", masterController.updateRecord)
 
 // Master Configuration (sites)
 apiRouter.post("/create-site", siteController.apiCreateSite)
+apiRouter.get("/get-sites", siteController.getData)
+apiRouter.put("/site-update/:id", siteController.updateRecord)
+apiRouter.delete("/delete-site-record/:id", siteController.deleteRecord)
+
+// Mastrer configuration (plant)
+apiRouter.post("/create-plant", plantController.apiCreatePlant)
 
 module.exports = apiRouter
 apiRouter.get("/profile/:username/workflow", userController.ifUserExists, userController.apiGetWorkflowByUsername)

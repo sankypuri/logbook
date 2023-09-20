@@ -9,7 +9,7 @@ function MasterList() {
   const [selectedMaster, setSelectedMaster] = useState(null)
 
   useEffect(() => {
-    console.log("Master List Use Effect has been run.")
+    // console.log("Master List Use Effect has been run.")
     axios
       .get("/master-table")
       .then((response) => {
@@ -45,7 +45,7 @@ function MasterList() {
   }
 
   return (
-    <div>
+    <div className="container">
       <table className="table table-striped">
         <thead>
           <tr>
@@ -56,7 +56,7 @@ function MasterList() {
             <th scope="col">Value </th>
             <th scope="col">Status </th>
             <th scope="col">Subcategory </th>
-            <th scope="col">Edit </th>
+            <th scope="col">Update </th>
             <th scope="col">Delete </th>
           </tr>
         </thead>

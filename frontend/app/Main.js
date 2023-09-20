@@ -33,6 +33,8 @@ import LogbookList from "./components/LogbookList"
 import MasterForm from "./components/MasterForm"
 import MasterList from "./components/MasterList"
 import CreateSites from "./components/CreateSites"
+import SiteList from "./components/SitesList"
+import CreatePlants from "./components/CreatePlants"
 
 function Main() {
   const initialState = {
@@ -106,7 +108,12 @@ function Main() {
               {/* Master Configuration */}
               <Route path="/master" element={state.loggedIn ? <MasterList /> : <HomeGuest />} />
               <Route path="/configuration/masterForm" element={state.loggedIn ? <MasterForm /> : <HomeGuest />} />
+              {/* Site */}
               <Route path="/configuration/create-site" element={state.loggedIn ? <CreateSites /> : <HomeGuest />} />
+              <Route path="/configuration/sites" element={state.loggedIn ? <SiteList /> : <HomeGuest />} />
+
+              {/* Plant */}
+              <Route path="/configuration/create-plant" element={state.loggedIn ? <CreatePlants /> : <HomeGuest />} />
 
               <Route path="/profile/:username/task-builder/workflow" element={<ViewAllWorkFlows />} />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />

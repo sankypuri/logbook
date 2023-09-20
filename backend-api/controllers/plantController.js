@@ -1,8 +1,8 @@
-const siteCollection = require("../db").db().collection("sites")
-const Site = require("../models/Site.js")
+const plantCollection = require("../db").db().collection("plants")
+const Plant = require("../models/Plant.js")
 
-exports.apiCreateSite = function (req, res) {
-  let entry = new Site(req.body)
+exports.apiCreatePlant = function (req, res) {
+  let entry = new Plant(req.body)
   entry
     .create()
     .then(function (newId) {
@@ -15,9 +15,9 @@ exports.apiCreateSite = function (req, res) {
 
 exports.getData = async function (req, res) {
   try {
-    let siteData = await Site.getData()
+    let plantData = await Plant.getData()
 
-    res.json(siteData)
+    res.json(plantData)
     // console.log("In geData() function: " + siteData)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -27,7 +27,7 @@ exports.getData = async function (req, res) {
 }
 
 exports.deleteRecord = function (req, res) {
-  Site.delete(req.params.id)
+  Plant.delete(req.params.id)
     .then(() => {
       res.json("Success")
     })
@@ -38,7 +38,7 @@ exports.deleteRecord = function (req, res) {
 
 exports.updateRecord = function (req, res) {
   console.log("In updateRecord()")
-  Site.update(req.params.id, req.body)
+  Plant.update(req.params.id, req.body)
     .then(() => {
       res.json("Success")
     })

@@ -27,6 +27,7 @@ class Master {
         .concat(finalOperations)
 
       let masters = await masterCollection.aggregate(aggOperations).toArray()
+      console.log(JSON.stringify(masters))
       masters = masters.map(function (master) {
         return master
       })
