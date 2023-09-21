@@ -1,5 +1,6 @@
-const plantCollection = require("../db").db().collection("plants")
+// const plantCollection = require("../db").db().collection("plants")
 const Plant = require("../models/Plant.js")
+const Site = require("../models/Site.js")
 
 exports.apiCreatePlant = function (req, res) {
   let entry = new Plant(req.body)
@@ -23,6 +24,28 @@ exports.getData = async function (req, res) {
     res.status(500).json({ error: err.message })
     // console.log(err.message)
     res.status(500).send("Error in getData()" + err.message)
+  }
+}
+
+exports.getChildrenByParentId = async function (req, res) {
+  try {
+    let plantData = await Plant.getChildrenByParentId(req.params.id)
+    res.json(plantData)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+    // console.log(err.message)
+    res.status(500).send("Error in getData()" + err.message)
+  }
+}
+
+exports.getParentById = async function (req, res) {
+  try {
+    let parentData = await Site.findSingleById(req.params.id)
+    res.json(parentData)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+    // console.log(err.message)
+    // res.status(500).send("Error in getData()" + err.message)
   }
 }
 

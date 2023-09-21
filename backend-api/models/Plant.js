@@ -1,6 +1,8 @@
 const plantCollection = require("../db").db().collection("plants")
+const siteCollection = require("../db").db().collection("sites")
+const Site = require("./Site.js")
 const ObjectId = require("mongodb").ObjectId
-// plantCollection.createIndex({ siteName: "text", description: "text" })
+// plantCollection.createIndex({ plantName: "text", parentSiteId })
 
 class Plant {
   constructor(data) {
@@ -8,7 +10,7 @@ class Plant {
     this.errors = []
   }
 
-  static reusableSiteQuery(uniqueOperations, visitorId, finalOperations = []) {
+  static reusableGetQuery(uniqueOperations, visitorId, finalOperations = []) {
     return new Promise(async function (resolve, reject) {
       let aggOperations = uniqueOperations
         .concat([
@@ -59,7 +61,7 @@ class Plant {
   }
 
   static getData() {
-    return Site.reusableSiteQuery([])
+    return Plant.reusableGetQuery([])
   }
 
   validate() {
@@ -114,10 +116,10 @@ class Plant {
         return
       }
 
-      let master = await Master.reusableMasterQuery([{ $match: { _id: new ObjectId(id) } }])
+      let plant = await Plant.reusableGetQuery([{ $match: { _id: new ObjectId(id) } }])
 
-      if (master.length) {
-        resolve(master[0])
+      if (plant.length) {
+        resolve(plant[0])
       } else {
         reject()
       }
@@ -135,34 +137,42 @@ class Plant {
     })
   }
 
-  static update(siteIdToUpdate, newData) {
+  static update(plantIdToUpdate, newData) {
     return new Promise(async (resolve, reject) => {
       try {
         // console.log("ID to update: " + masterIdToUpdate)
         // console.log("Data To Update: " + newData.ID + ", " + newData.Category + ", " + newData.Subcategory)
 
-        const updatedSite = await plantCollection.findOneAndUpdate(
-          { _id: new ObjectId(siteIdToUpdate) },
+        const updatedPlant = await plantCollection.findOneAndUpdate(
+          { _id: new ObjectId(plantIdToUpdate) },
           {
             $set: {
-              siteName: newData.siteName,
+              plantName: newData.siteName,
               description: newData.description,
             },
           }
         )
-        if (!updatedSite) {
+        if (!updatedPlant) {
           reject()
         }
-        resolve(updatedSite)
+        resolve(updatedPlant)
       } catch (err) {
         reject()
       }
     })
   }
 
-  static getAllSites() {
+  static getChildrenByParentId(id) {
     return new Promise(async (resolve, reject) => {
       try {
+        if (typeof id != "string" || !ObjectId.isValid(id)) {
+          reject()
+          return
+        }
+
+        let children = await Plant.reusableGetQuery([{ $match: { parentSiteId: new ObjectId(id) } }])
+
+        resolve(children)
       } catch (err) {
         reject()
       }

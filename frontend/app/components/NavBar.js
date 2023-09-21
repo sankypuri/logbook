@@ -52,27 +52,27 @@ const Navbar = () => {
       childrens: [
         {
           title: "Site",
-          url: "/profile/username/master-configure/site",
+          url: "/configuration/sites",
           icon: "bi bi-building",
         },
         {
           title: "Plant",
-          url: "/profile/username/master-configure/plant",
+          url: "/configuration/plants",
           icon: "bi bi-house",
         },
         {
           title: "Area",
-          url: "/profile/username/master-configure/area",
+          url: "/configuration/sites",
           icon: "bi bi-map",
         },
         {
           title: "Line",
-          url: "/profile/username/master-configure/line",
+          url: "/configuration/lines",
           icon: "bi bi-list-nested",
         },
         {
           title: "Equipment",
-          url: "/profile/username/master-configure/equipment",
+          url: "/configuration/equipments",
           icon: "bi bi-boxes",
         },
       ],

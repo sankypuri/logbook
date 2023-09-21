@@ -100,10 +100,10 @@ class Site {
         return
       }
 
-      let master = await Master.reusableMasterQuery([{ $match: { _id: new ObjectId(id) } }])
-
-      if (master.length) {
-        resolve(master[0])
+      let site = await Site.reusableSiteQuery([{ $match: { _id: new ObjectId(id) } }])
+      // console.log(JSON.stringify(site))
+      if (site.length) {
+        resolve(site[0])
       } else {
         reject()
       }

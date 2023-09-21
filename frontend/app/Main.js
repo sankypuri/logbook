@@ -35,6 +35,7 @@ import MasterList from "./components/MasterList"
 import CreateSites from "./components/CreateSites"
 import SiteList from "./components/SitesList"
 import CreatePlants from "./components/CreatePlants"
+import PlantList from "./components/PlantList"
 
 function Main() {
   const initialState = {
@@ -114,6 +115,8 @@ function Main() {
 
               {/* Plant */}
               <Route path="/configuration/create-plant" element={state.loggedIn ? <CreatePlants /> : <HomeGuest />} />
+              <Route path="/configuration/plants/:id" element={state.loggedIn ? <PlantList /> : <HomeGuest />} />
+              <Route path="/configuration/plants/" element={state.loggedIn ? <PlantList /> : <HomeGuest />} />
 
               <Route path="/profile/:username/task-builder/workflow" element={<ViewAllWorkFlows />} />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />

@@ -85,6 +85,9 @@ apiRouter.delete("/delete-site-record/:id", siteController.deleteRecord)
 
 // Mastrer configuration (plant)
 apiRouter.post("/create-plant", plantController.apiCreatePlant)
+apiRouter.get("/get-plants", plantController.getData)
+apiRouter.get("/get-plants/:id", plantController.getChildrenByParentId)
+apiRouter.get("/get-parent-site/:id", plantController.getParentById)
 
 module.exports = apiRouter
 apiRouter.get("/profile/:username/workflow", userController.ifUserExists, userController.apiGetWorkflowByUsername)

@@ -1,4 +1,4 @@
-const siteCollection = require("../db").db().collection("sites")
+// const siteCollection = require("../db").db().collection("sites")
 const Site = require("../models/Site.js")
 
 exports.apiCreateSite = function (req, res) {

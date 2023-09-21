@@ -24,11 +24,16 @@ function SiteUpdateForm({ site, onUpdate, onCancel }) {
 
   return (
     <div className="form-overlay container">
-      <h2>Update Site</h2>
+      <div className="form-heading">
+        <h2>Update Site</h2>
+        <a onClick={onCancel} data-tip="cancel" data-for="cancel" className="cancel">
+          <i class="bi bi-x-lg"></i>
+        </a>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="siteName" className="text-muted mb-1">
-            <small>siteName</small>
+            <small>Site Name</small>
           </label>
           <input type="text" name="siteName" className="form-control" value={updatedSite.siteName} onChange={handleInputChange} />
         </div>

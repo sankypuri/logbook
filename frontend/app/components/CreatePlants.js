@@ -90,7 +90,7 @@ function CreatePlants(props) {
               </label>
               <select name="site" id="site-list" onChange={handleSiteSelection} className="form-control">
                 {siteList.map((site) => (
-                  <option key={site._id} value={site._id}>
+                  <option key={site._id} value={site._id} className="">
                     {site.siteName}
                   </option>
                 ))}

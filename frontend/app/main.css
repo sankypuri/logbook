@@ -362,6 +362,15 @@ textarea.tall-textarea {
   padding: 20px;
 }
 
+.form-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+}
+.cancel {
+  cursor: pointer;
+}
+
 @media (min-width: 700px) {
   .live-search-field {
     font-size: 2.5rem;

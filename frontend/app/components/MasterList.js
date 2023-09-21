@@ -73,12 +73,6 @@ function MasterList() {
               <td>
                 <Link onClick={() => handleUpdate(master)} data-tip="Edit" data-for="edit" className="bi bi-pencil"></Link>
                 <ReactTooltip id="edit" className="custom-tooltip" />{" "}
-                {/* <button onClick={() => handleUpdate(master)} className="btn btn-sm btn-success">
-                  Update
-                </button> */}
-                {/* <button onClick={() => handleDelete(master._id)} className="btn btn-sm btn-red">
-                  Delete
-                </button> */}
               </td>
               <td>
                 <a onClick={() => handleDelete(master._id)} data-tip="Delete" data-for="delete" className="delete-post-button text-danger">

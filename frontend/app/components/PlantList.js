@@ -5,28 +5,40 @@ import { useParams, Link } from "react-router-dom"
 import LoadingDotsIcon from "./LoadingDotsIcon"
 import SiteUpdateForm from "./SiteUpdateForm"
 import ReactTooltip from "react-tooltip"
+import NoItems from "./NoItems"
 
 function SiteList(props) {
-  const { username } = useParams()
+  const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
-  const [sites, setSites] = useState([])
-  const [selectedSite, setSelectedSite] = useState(null)
+  const [noData, setNoData] = useState(false)
+  const [plants, setPlants] = useState([])
+  const [selectedPlant, setSelectedPlant] = useState(null)
+  const [parentSite, setParentSite] = useState([])
 
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source()
 
-    async function fetchSites() {
+    async function fetchPlants() {
       try {
-        const response = await Axios.get(`/get-sites`, {
+        const reqURL = id ? `/get-plants/${id}` : "/get-plants"
+        // console.log("Req URL: " + reqURL)
+        const response = await Axios.get(reqURL, {
           cancelToken: ourRequest.token,
         })
-        setSites(response.data)
+        if (id) {
+          const parentData = await Axios.get(`/get-parent-site/${id}`, {
+            cancelToken: ourRequest.token,
+          })
+          setParentSite(parentData.data)
+        }
+        setPlants(response.data)
+        if (response.data.length == 0) setNoData(true)
         setIsLoading(false)
       } catch (e) {
         console.log("There was a problem : " + e)
       }
     }
-    fetchSites()
+    fetchPlants()
     return () => {
       ourRequest.cancel()
     }
@@ -35,11 +47,11 @@ function SiteList(props) {
   if (isLoading) return <LoadingDotsIcon />
 
   const handleUpdate = (site) => {
-    setSelectedSite(site)
+    setSelectedPlant(site)
   }
 
   const handleCancelUpdate = () => {
-    setSelectedSite(null)
+    setSelectedPlant(null)
   }
 
   const handleDelete = (id) => {
@@ -58,36 +70,46 @@ function SiteList(props) {
     }
   }
 
+  const breadCrumbSite = id ? `${parentSite.siteName}` : "Sites"
+
   return (
     <div className="container">
+      <p>
+        Configure Masters &gt; <a href="/configuration/sites">{breadCrumbSite}</a> &gt; Plants
+      </p>
+
+      {noData && <NoItems childType="plants" parent={parentSite.siteName} parentType={parentSite.type} />}
+
       <table className="table table-striped">
         <thead>
           <tr>
-            <th scope="col">Site Name</th>
+            <th scope="col">Plant Name</th>
             <th scope="col">Description</th>
+            <th scope="col">Site</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
 
         <tbody>
-          {sites.map((site) => {
+          {plants.map((plant) => {
             return (
-              <tr key={site._id}>
-                <td>{site.siteName}</td>
-                <td>{site.description}</td>
+              <tr key={plant._id}>
+                <td>{plant.plantName}</td>
+                <td>{plant.description}</td>
+                <td>{plant.parentSiteName}</td>
                 <td>
-                  <Link onClick={() => handleUpdate(site)} data-tip="Update" data-for="edit" className="bi bi-pencil"></Link>
+                  <Link onClick={() => handleUpdate(plant)} data-tip="Update" data-for="edit" className="bi bi-pencil"></Link>
                   <ReactTooltip id="edit" className="custom-tooltip" />{" "}
                 </td>
                 <td>
-                  <a onClick={() => handleDelete(site._id)} data-tip="Delete" data-for="delete" className="delete-post-button text-danger">
+                  <a onClick={() => handleDelete(plant._id)} data-tip="Delete" data-for="delete" className="delete-post-button text-danger">
                     <i className="fas fa-trash"></i>
                   </a>
                   <ReactTooltip id="delete" className="custom-tooltip" />
                 </td>
                 <td>
-                  <a href={`/configuration/plants/${site._id}`} data-tip="View plants under this site" data-for="plant" className="delete-post-button text-primary">
+                  <a href={`/configuration/plants/${plant._id}`} data-tip="View areas under this plant" data-for="plant" className="delete-post-button text-primary">
                     <i className="bi bi-house"></i>
                   </a>
                   <ReactTooltip id="plant" className="custom-tooltip" />
@@ -98,14 +120,14 @@ function SiteList(props) {
         </tbody>
       </table>
 
-      {selectedSite && (
+      {selectedPlant && (
         <SiteUpdateForm
-          site={selectedSite}
+          site={selectedPlant}
           onCancel={handleCancelUpdate}
-          onUpdate={(updatedSite) => {
+          onUpdate={(updatedPlant) => {
             // Update the UI with the updated data
-            setSites((prevSite) => prevSite.map((s) => (s._id === updatedSite._id ? updatedSite : s)))
-            setSelectedSite(null)
+            setPlants((prevPlant) => prevPlant.map((s) => (s._id === updatedPlant._id ? updatedPlant : s)))
+            setSelectedPlant(null)
           }}
         />
       )}
