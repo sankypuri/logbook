@@ -89,109 +89,72 @@ function ViewSingleStep(props) {
   }
 
   return (
-    <div className="container" title="WorkFlow Screen">
-      <div className="mask d-flex align-items-center h-100 gradient-custom-3">
-        <div className="container h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-12 col-md-10 col-lg-9 col-xl-8">
-              <div className="card" style={{ border: 15 }}>
-                <div class="container"></div>
-
-                <div class="container" style={{ background: "burlywood" }}>
-                  <div class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-sm">
-                      {" "}
-                      <h2>{step.title}</h2>
-                    </div>
-                    <div class="col-sm" style={{ textAlign: "right" }}>
-                      <p className="text-muted small mb-4">
-                        <Link to={`/profile/${step.author.username}`}>
-                          <img
-                            className="avatar-tiny"
-                            src={step.author.avatar}
-                          />
-                        </Link>
-                        Created by{" "}
-                        <Link to={`/profile/${step.author.username}`}>
-                          {step.author.username}
-                        </Link>{" "}
-                        on {dateFormatted}
-                        {""}
-                        {isOwner() && (
-                          <span className="pt-2">
-                            <Link
-                              to={`/step/${step._id}/edit`}
-                              data-tip="Edit"
-                              data-for="edit"
-                              className="text-primary mr-2"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Link>
-                            <ReactTooltip
-                              id="edit"
-                              className="custom-tooltip"
-                            />{" "}
-                            <a
-                              onClick={deleteHandler}
-                              data-tip="Delete"
-                              data-for="delete"
-                              className="delete-post-button text-danger"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </a>
-                            <ReactTooltip
-                              id="delete"
-                              className="custom-tooltip"
-                            />
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card-body p-5">
-                  <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                      <div className="body-content">
-                        {/* <ReactMarkdown
-                          children={step.body}
-                          allowedElements={[
-                            "p",
-                            "br",
-                            "strong",
-                            "em",
-                            "h1",
-                            "h2",
-                            "h3",
-                            "h4",
-                            "h5",
-                            "h6",
-                            "ul",
-                            "ol",
-                            "li",
-                          ]}
-                        /> */}
-                      </div>
-                      <div>
-                        <Form
-                          form={{
-                            components: [step.schema],
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div class="col-2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <Page title={step.title}>
+      <div className="d-flex justify-content-between">
+        <h2>{step.title}</h2>
+        {isOwner() && (
+          <span className="pt-2">
+            <Link
+              to={`/step/${step._id}/edit`}
+              data-tip="Edit"
+              data-for="edit"
+              className="text-primary mr-2"
+            >
+              <i className="fas fa-edit"></i>
+            </Link>
+            <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+            <a
+              onClick={deleteHandler}
+              data-tip="Delete"
+              data-for="delete"
+              className="delete-post-button text-danger"
+            >
+              <i className="fas fa-trash"></i>
+            </a>
+            <ReactTooltip id="delete" className="custom-tooltip" />
+          </span>
+        )}
       </div>
-    </div>
+
+      <p className="text-muted small mb-4">
+        <Link to={`/profile/${step.author.username}`}>
+          <img className="avatar-tiny" src={step.author.avatar} />
+        </Link>
+        Created by{" "}
+        <Link to={`/profile/${step.author.username}`}>
+          {step.author.username}
+        </Link>{" "}
+        on {dateFormatted}
+      </p>
+
+      <div className="body-content">
+        <ReactMarkdown
+          children={step.body}
+          allowedElements={[
+            "p",
+            "br",
+            "strong",
+            "em",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "ul",
+            "ol",
+            "li",
+          ]}
+        />
+      </div>
+      <div>
+        <Form
+          form={{
+            components: [step.schema],
+          }}
+        />
+      </div>
+    </Page>
   );
 }
 
