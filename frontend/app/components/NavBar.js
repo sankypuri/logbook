@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import SidebarItem from "./NavBarItem";
+import React, { useState } from "react"
+import SidebarItem from "./NavBarItem"
 
 const Navbar = () => {
   // to change burger classes
-  const [burger_class, setBurgerClass] = useState("burger-bar unclicked");
-  const [menu_class, setMenuClass] = useState("menu hidden");
-  const [isMenuClicked, setIsMenuClicked] = useState(false);
+  const [burger_class, setBurgerClass] = useState("burger-bar unclicked")
+  const [menu_class, setMenuClass] = useState("menu hidden")
+  const [isMenuClicked, setIsMenuClicked] = useState(false)
 
   // toggle burger menu change
   const updateMenu = () => {
     if (!isMenuClicked) {
-      setBurgerClass("burger-bar clicked");
-      setMenuClass("menu visible");
+      setBurgerClass("burger-bar clicked")
+      setMenuClass("menu visible")
     } else {
-      setBurgerClass("burger-bar unclicked");
-      setMenuClass("menu hidden");
+      setBurgerClass("burger-bar unclicked")
+      setMenuClass("menu hidden")
     }
-    setIsMenuClicked(!isMenuClicked);
-  };
+    setIsMenuClicked(!isMenuClicked)
+  }
 
   const items = [
     {
@@ -43,7 +43,41 @@ const Navbar = () => {
         },
       ],
     },
-  ];
+
+    {
+      title: "Configure Masters",
+      icon: "bi bi-gear", //"../public/img/climb-arrow-light-48.png",
+      id: 2,
+      url: "/master-configure",
+      childrens: [
+        {
+          title: "Site",
+          url: "/configuration/sites",
+          icon: "bi bi-building",
+        },
+        {
+          title: "Plant",
+          url: "/configuration/plants",
+          icon: "bi bi-house",
+        },
+        {
+          title: "Area",
+          url: "/configuration/sites",
+          icon: "bi bi-map",
+        },
+        {
+          title: "Line",
+          url: "/configuration/lines",
+          icon: "bi bi-list-nested",
+        },
+        {
+          title: "Equipment",
+          url: "/configuration/equipments",
+          icon: "bi bi-boxes",
+        },
+      ],
+    },
+  ]
 
   return (
     <div>
@@ -63,7 +97,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

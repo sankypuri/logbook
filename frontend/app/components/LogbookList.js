@@ -10,7 +10,7 @@ import ReactTooltip from "react-tooltip";
 import NotFound from "./NotFound";
 import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
-function WorkFlowList(props) {
+function LogbookList(props) {
   const { username } = useParams();
   const { id } = useParams();
   const appState = useContext(StateContext);
@@ -23,7 +23,7 @@ function WorkFlowList(props) {
 
     async function fetchWorkFlow() {
       try {
-        const response = await Axios.get(`/profile/${username}/workflow`, {
+        const response = await Axios.get(`/profile/${username}/logbook`, {
           cancelToken: ourRequest.token,
         });
         setWorkFlow(response.data);
@@ -68,11 +68,10 @@ function WorkFlowList(props) {
     <table className="table table-striped">
       <thead className="tablehead">
         <tr>
-          <th scope="col">WorkFlow Name</th>
+          <th scope="col">Logbook Name</th>
           <th scope="col">Description</th>
-          <th scope="col">Category</th>
-          <th scope="col">Approver1</th>
-          <th scope="col">Approver2</th>
+          <th scope="col">AssociatedWorkflow</th>
+          <th scope="col">AssociatedStep</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
         </tr>
@@ -87,14 +86,13 @@ function WorkFlowList(props) {
 
           return (
             <tr>
-              <td>{workflow.workflow}</td>
+              <td>{workflow.logbook}</td>
               <td>{workflow.description}</td>
-              <td>{workflow.category}</td>
-              <td>{workflow.approver1}</td>
-              <td>{workflow.approver2}</td>
+              <td>{workflow.asociatedWorkflow}</td>
+              <td>{workflow.asociatedStep}</td>
               <td>
                 <Link
-                  to={`/workflow/${workflow._id}/edit`}
+                  to={`/logbook/${workflow._id}/edit`}
                   data-tip="Edit"
                   data-for="edit"
                   className="bi bi-pencil"
@@ -120,4 +118,4 @@ function WorkFlowList(props) {
   );
 }
 
-export default WorkFlowList;
+export default LogbookList;

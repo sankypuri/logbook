@@ -33,7 +33,7 @@ function ProfileSteps(props) {
 
   return (
     <table className="table table-striped">
-      <thead>
+      <thead className="tablehead">
         <tr>
           <th scope="col">Step Name</th>
           <th scope="col">Created on</th>
@@ -56,7 +56,7 @@ function ProfileSteps(props) {
               <td>{step.tag}</td>
               <td>
                 <Link key={step._id} to={`/step/${step._id}`}>
-                  <i className="bi bi-box-arrow-up-right"></i>
+                  <i className="bi bi-eye"></i>
                 </Link>
               </td>
             </tr>
