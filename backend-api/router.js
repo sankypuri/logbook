@@ -88,6 +88,8 @@ apiRouter.post("/create-plant", plantController.apiCreatePlant)
 apiRouter.get("/get-plants", plantController.getData)
 apiRouter.get("/get-plants/:id", plantController.getChildrenByParentId)
 apiRouter.get("/get-parent-site/:id", plantController.getParentById)
+apiRouter.delete("/delete-plant-record/:id", plantController.deleteRecord)
+apiRouter.put("/plant-update/:id", plantController.updateRecord)
 
 module.exports = apiRouter
 apiRouter.get("/profile/:username/workflow", userController.ifUserExists, userController.apiGetWorkflowByUsername)

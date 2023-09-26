@@ -6,6 +6,7 @@ import LoadingDotsIcon from "./LoadingDotsIcon"
 import SiteUpdateForm from "./SiteUpdateForm"
 import ReactTooltip from "react-tooltip"
 import NoItems from "./NoItems"
+import PlantUpdateForm from "./PlantUpdateForm"
 
 function SiteList(props) {
   const { id } = useParams()
@@ -57,7 +58,7 @@ function SiteList(props) {
   const handleDelete = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this recond?")
     if (confirmDelete) {
-      Axios.delete(`delete-site-record/${id}`)
+      Axios.delete(`delete-plant-record/${id}`)
         .then(() => {
           console.log("The record has been deleted successfully, now loading new records.")
           setSites(sites.filter((site) => site.id !== id))
@@ -121,8 +122,8 @@ function SiteList(props) {
       </table>
 
       {selectedPlant && (
-        <SiteUpdateForm
-          site={selectedPlant}
+        <PlantUpdateForm
+          plant={selectedPlant}
           onCancel={handleCancelUpdate}
           onUpdate={(updatedPlant) => {
             // Update the UI with the updated data

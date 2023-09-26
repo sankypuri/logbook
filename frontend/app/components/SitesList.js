@@ -5,12 +5,14 @@ import { useParams, Link } from "react-router-dom"
 import LoadingDotsIcon from "./LoadingDotsIcon"
 import SiteUpdateForm from "./SiteUpdateForm"
 import ReactTooltip from "react-tooltip"
+import CreateSites from "./CreateSites"
 
 function SiteList(props) {
   const { username } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [sites, setSites] = useState([])
   const [selectedSite, setSelectedSite] = useState(null)
+  const [createSite, setCreateSite] = useState(false)
 
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source()
@@ -42,6 +44,10 @@ function SiteList(props) {
     setSelectedSite(null)
   }
 
+  const handleCancelCreate = () => {
+    setCreateSite(false)
+  }
+
   const handleDelete = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this recond?")
     if (confirmDelete) {
@@ -58,8 +64,20 @@ function SiteList(props) {
     }
   }
 
+  const handleCreate = (createdSite) => {
+    setSites({ ...sites, createdSite })
+    createSite(false)
+    console.log(JSON.stringify(createdSite))
+  }
   return (
     <div className="container">
+      <div className="form-heading">
+        <p>Configure Masters &gt; Sites</p>
+        <button onClick={() => setCreateSite(true)} type="button" class="btn btn-primary btn-sm">
+          <i class="bi bi-plus-lg"></i> Create New Site
+        </button>
+        {/* <Link onClick={() => setCreateSite(true)} className="bi bi-plus-circle" data-tip="Create" data-for="create"></Link> */}
+      </div>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -109,6 +127,8 @@ function SiteList(props) {
           }}
         />
       )}
+
+      {createSite && <CreateSites onCancel={handleCancelCreate} onCreate={handleCreate} />}
     </div>
   )
 }

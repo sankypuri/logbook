@@ -80,8 +80,11 @@ class Site {
         // save post into database
         siteCollection
           .insertOne(this.data)
-          .then((info) => {
-            resolve(info.insertedId)
+          .then(async (info) => {
+            let site = await Site.reusableSiteQuery([{ $match: { _id: new ObjectId(info.insertedId) } }])
+            // console.log("Created Site: " + JSON.stringify(site))
+            resolve(site)
+            // resolve(this.data)
           })
           .catch((e) => {
             this.errors.push("Please try again later.")

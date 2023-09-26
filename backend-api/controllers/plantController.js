@@ -52,7 +52,7 @@ exports.getParentById = async function (req, res) {
 exports.deleteRecord = function (req, res) {
   Plant.delete(req.params.id)
     .then(() => {
-      res.json("Success")
+      res.json("Deleted successfully.")
     })
     .catch((e) => {
       res.json("The record cannot be deleted.")
@@ -60,7 +60,7 @@ exports.deleteRecord = function (req, res) {
 }
 
 exports.updateRecord = function (req, res) {
-  console.log("In updateRecord()")
+  // console.log("In updateRecord()")
   Plant.update(req.params.id, req.body)
     .then(() => {
       res.json("Success")

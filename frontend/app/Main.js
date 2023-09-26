@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useEffect } from "react"
 import ReactDOM from "react-dom/client"
 import { useImmerReducer } from "use-immer"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom"
 import { CSSTransition } from "react-transition-group"
 import Axios from "axios"
 Axios.defaults.baseURL = "http://localhost:8083"
@@ -117,6 +117,8 @@ function Main() {
               <Route path="/configuration/create-plant" element={state.loggedIn ? <CreatePlants /> : <HomeGuest />} />
               <Route path="/configuration/plants/:id" element={state.loggedIn ? <PlantList /> : <HomeGuest />} />
               <Route path="/configuration/plants/" element={state.loggedIn ? <PlantList /> : <HomeGuest />} />
+
+              {/* Area */}
 
               <Route path="/profile/:username/task-builder/workflow" element={<ViewAllWorkFlows />} />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />

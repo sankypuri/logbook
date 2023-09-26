@@ -126,10 +126,10 @@ class Plant {
     })
   }
 
-  static delete(siteIdToDelete) {
+  static delete(plantIdToDelete) {
     return new Promise(async (resolve, reject) => {
       try {
-        await plantCollection.deleteOne({ _id: new ObjectId(siteIdToDelete) })
+        await plantCollection.deleteOne({ _id: new ObjectId(plantIdToDelete) })
         resolve()
       } catch (e) {
         reject()
@@ -147,7 +147,7 @@ class Plant {
           { _id: new ObjectId(plantIdToUpdate) },
           {
             $set: {
-              plantName: newData.siteName,
+              plantName: newData.plantName,
               description: newData.description,
             },
           }
