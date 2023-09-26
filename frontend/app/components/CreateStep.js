@@ -99,9 +99,19 @@ function CreateStep(props) {
             name="schema"
             options={{
               builder: {
-                advanced: {
+                premium: false,
+                advanced: false,
+                data: false,
+                basic: {
+                  title: "Input Components",
+                },
+                layout: {
                   components: {
-                    signature: true,
+                    content: false,
+                    htmlelement: false,
+                    panel: false,
+                    fieldset: false,
+                    well: false,
                   },
                 },
               },
