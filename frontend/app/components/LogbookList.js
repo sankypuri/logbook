@@ -20,7 +20,6 @@ function LogbookList(props) {
 
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source();
-
     async function fetchWorkFlow() {
       try {
         const response = await Axios.get(`/profile/${username}/logbook`, {
@@ -37,13 +36,13 @@ function LogbookList(props) {
       ourRequest.cancel();
     };
   }, []);
-  async function deleteHandler(workflowID) {
+  async function deleteHandler(logbookID) {
     const areYouSure = window.confirm(
-      "Do you really want to delete this workflow?"
+      "Do you really want to delete this logbook?"
     );
     if (areYouSure) {
       try {
-        const response = await Axios.delete(`/workflow/${workflowID}`, {
+        const response = await Axios.delete(`/logbook/${logbookID}`, {
           data: { token: appState.user.token },
         });
         if (response.data == "Success") {
@@ -78,21 +77,16 @@ function LogbookList(props) {
       </thead>
 
       <tbody>
-        {workflowlist.map((workflow) => {
-          //const date = new Date(step.createdDate);
-          // const dateFormatted = `${
-          //   date.getMonth() + 1
-          // }/${date.getDate()}/${date.getFullYear()}`;
-
+        {workflowlist.map((logbook) => {
           return (
-            <tr>
-              <td>{workflow.logbook}</td>
-              <td>{workflow.description}</td>
-              <td>{workflow.asociatedWorkflow}</td>
-              <td>{workflow.asociatedStep}</td>
+            <tr key={logbook._id}>
+              <td>{logbook.logbook}</td>
+              <td>{logbook.description}</td>
+              <td>{logbook.asociatedWorkflow}</td>
+              <td>{logbook.asociatedStep}</td>
               <td>
                 <Link
-                  to={`/logbook/${workflow._id}/edit`}
+                  to={`/logbook/${logbook._id}/edit`}
                   data-tip="Edit"
                   data-for="edit"
                   className="bi bi-pencil"
@@ -101,7 +95,7 @@ function LogbookList(props) {
               </td>
               <td>
                 <a
-                  onClick={() => deleteHandler(workflow._id)}
+                  onClick={() => deleteHandler(logbook._id)}
                   data-tip="Delete"
                   data-for="delete"
                   className="delete-post-button text-danger"

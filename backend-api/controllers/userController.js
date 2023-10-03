@@ -69,18 +69,21 @@ exports.sharedProfileData = async function (req, res, next) {
   let workflowCountPromise = Workflow.countWorkFlowByAuthor(
     req.profileUser._id
   );
+  let logbookCountPromise = Logbook.countLogbookByAuthor(req.profileUser._id);
   let followerCountPromise = Follow.countFollowersById(req.profileUser._id);
   let followingCountPromise = Follow.countFollowingById(req.profileUser._id);
-  let [stepCount, workflowCount, followerCount, followingCount] =
+  let [stepCount, workflowCount, logbookCount, followerCount, followingCount] =
     await Promise.all([
       stepCountPromise,
       workflowCountPromise,
+      logbookCountPromise,
       followerCountPromise,
       followingCountPromise,
     ]);
 
   req.stepCount = stepCount;
   req.workflowCount = workflowCount;
+  req.logbookCount = logbookCount;
   req.followerCount = followerCount;
   req.followingCount = followingCount;
 

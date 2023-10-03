@@ -45,8 +45,8 @@ exports.apiDelete = function (req, res) {
 
 exports.search = function (req, res) {
   Logbook.search(req.logbook.searchTerm)
-    .then((workflows) => {
-      res.json(workflows);
+    .then((logbooks) => {
+      res.json(logbooks);
     })
     .catch((e) => {
       res.json([]);

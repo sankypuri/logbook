@@ -25,7 +25,7 @@ Logbook.prototype.cleanUp = function () {
 
   // get rid of any bogus properties
   this.data = {
-    log: sanitizeHTML(this.data.logbook.trim(), {
+    logbook: sanitizeHTML(this.data.logbook.trim(), {
       allowedTags: [],
       allowedAttributes: {},
     }),
@@ -43,7 +43,7 @@ Logbook.prototype.cleanUp = function () {
 
 Logbook.prototype.validate = function () {
   if (this.data.logbook == "") {
-    this.errors.push("You must provide a title.");
+    this.errors.push("You must provide a Logbook.");
   }
   if (this.data.description == "") {
     this.errors.push("You must provide post content.");
@@ -77,7 +77,7 @@ Logbook.prototype.update = function () {
   return new Promise(async (resolve, reject) => {
     try {
       let logbook = await Logbook.findSingleById(
-        this.requestedWorkFlowId,
+        this.requestedLogbookId,
         this.userid
       );
       if (logbook.isVisitorOwner) {
@@ -99,7 +99,7 @@ Logbook.prototype.actuallyUpdate = function () {
     // this.validate();
     if (!this.errors.length) {
       await logbookCollection.findOneAndUpdate(
-        { _id: new ObjectID(this.requestedWorkFlowId) },
+        { _id: new ObjectID(this.requestedLogbookId) },
         {
           $set: {
             logbook: this.data.logbook,
@@ -191,16 +191,16 @@ Logbook.findByAuthorId = function (authorId) {
   ]);
 };
 
-Logbook.delete = function (workflowIdToDelete, currentUserId) {
+Logbook.delete = function (logbookIdToDelete, currentUserId) {
   return new Promise(async (resolve, reject) => {
     try {
       let logbook = await Logbook.findSingleById(
-        workflowIdToDelete,
+        logbookIdToDelete,
         currentUserId
       );
       if (logbook.isVisitorOwner) {
         await logbookCollection.deleteOne({
-          _id: new ObjectID(workflowIdToDelete),
+          _id: new ObjectID(logbookIdToDelete),
         });
         resolve();
       } else {
@@ -225,7 +225,7 @@ Logbook.search = function (searchTerm) {
     }
   });
 };
-Logbook.countWorkFlowByAuthor = function (id) {
+Logbook.countLogbookByAuthor = function (id) {
   return new Promise(async (resolve, reject) => {
     let logbookCount = await logbookCollection.countDocuments({ author: id });
     resolve(logbookCount);
