@@ -86,7 +86,7 @@ function WorkFlowList(props) {
           // }/${date.getDate()}/${date.getFullYear()}`;
 
           return (
-            <tr>
+            <tr key={workflow._id}>
               <td>{workflow.workflow}</td>
               <td>{workflow.description}</td>
               <td>{workflow.category}</td>

@@ -11,7 +11,7 @@ import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
 import NotFound from "./NotFound";
 
-function EditWorkFlow(props) {
+function EditLogbook(props) {
   const navigate = useNavigate();
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
@@ -367,4 +367,4 @@ function EditWorkFlow(props) {
   );
 }
 
-export default EditWorkFlow;
+export default EditLogbook;
