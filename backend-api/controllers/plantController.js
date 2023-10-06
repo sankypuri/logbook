@@ -40,7 +40,8 @@ exports.getChildrenByParentId = async function (req, res) {
 
 exports.getParentById = async function (req, res) {
   try {
-    let parentData = await Site.findSingleById(req.params.id)
+    // let parentData = await Site.findSingleById(req.params.id)
+    let parentData = await Plant.getParentData(req.params.id)
     res.json(parentData)
   } catch (err) {
     res.status(500).json({ error: err.message })

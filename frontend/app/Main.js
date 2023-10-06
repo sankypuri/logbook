@@ -119,6 +119,7 @@ function Main() {
               <Route path="/configuration/plants/" element={state.loggedIn ? <PlantList /> : <HomeGuest />} />
 
               {/* Area */}
+              {/* <Route path="/configuration/create-area" element={state.loggedIn ? <CreateArea /> : <HomeGuest />} /> */}
 
               <Route path="/profile/:username/task-builder/workflow" element={<ViewAllWorkFlows />} />
               <Route path="/create-workflow" element={<CreateWorkFlow />} />

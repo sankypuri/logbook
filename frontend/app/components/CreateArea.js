@@ -6,12 +6,12 @@ import DispatchContext from "../DispatchContext"
 import StateContext from "../StateContext"
 // const ObjectId = require("mongodb").ObjectId
 
-function CreatePlants(props) {
+function CreateAreas(props) {
   const [plantName, setPlantName] = useState()
   const [description, setDescription] = useState()
   const [parentSiteName, setParentSiteName] = useState()
   const [parentSiteId, setParentSiteId] = useState()
-  const [siteList, setSiteList] = useState([])
+  const [areaList, setAreaList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const appDispatch = useContext(DispatchContext)
@@ -20,18 +20,18 @@ function CreatePlants(props) {
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source()
 
-    async function fetchSites() {
+    async function fetchAreas() {
       try {
-        const response = await Axios.get(`/get-sites`, {
+        const response = await Axios.get(`/get-areas`, {
           cancelToken: ourRequest.token,
         })
-        setSiteList(response.data)
+        setAreaList(response.data)
         setIsLoading(false)
       } catch (e) {
         console.log("There was a problem : " + e)
       }
     }
-    fetchSites()
+    fetchAreas()
     return () => {
       ourRequest.cancel()
     }
@@ -114,4 +114,4 @@ function CreatePlants(props) {
   )
 }
 
-export default CreatePlants
+export default CreateAreas

@@ -3,12 +3,12 @@ import Axios from "axios"
 import { FormGrid } from "@formio/react"
 import { useParams, Link } from "react-router-dom"
 import LoadingDotsIcon from "./LoadingDotsIcon"
-import SiteUpdateForm from "./SiteUpdateForm"
+// import SiteUpdateForm from "./SiteUpdateForm"
 import ReactTooltip from "react-tooltip"
 import NoItems from "./NoItems"
 import PlantUpdateForm from "./PlantUpdateForm"
 
-function SiteList(props) {
+function PlantList(props) {
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [noData, setNoData] = useState(false)
@@ -62,7 +62,7 @@ function SiteList(props) {
         .then(() => {
           console.log("The record has been deleted successfully, now loading new records.")
           setSites(sites.filter((site) => site.id !== id))
-          SiteList()
+          PlantList()
           console.log("Data after deleting: " + sites)
         })
         .catch((error) => {
@@ -136,4 +136,4 @@ function SiteList(props) {
   )
 }
 
-export default SiteList
+export default PlantList

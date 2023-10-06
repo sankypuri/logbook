@@ -178,6 +178,39 @@ class Plant {
       }
     })
   }
+
+  static getParentData(parentId) {
+    return new Promise(async (resolve, reject) => {
+      if (typeof parentId != "string" || !ObjectId.isValid(parentId)) {
+        reject()
+        return
+      }
+      let aggOperations = [
+        {
+          $project: {
+            // _id: 1,
+            // plantName: 1,
+            // description: 1,
+            // type: 1,
+            // parentSiteName: 1,
+            // parentSiteId: 1,
+            $parentSiteId: _id,
+            $parentSiteName: siteName,
+          },
+          $match: {
+            _id: new ObjectId(parentId),
+          },
+        },
+      ]
+
+      let parentData = await siteCollection.aggregate(aggOperations).toArray()
+      parentData = parentData.map(function (parent) {
+        return parent
+      })
+
+      resolve(parentData)
+    })
+  }
 }
 
 module.exports = Plant

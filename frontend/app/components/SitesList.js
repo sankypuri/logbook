@@ -69,6 +69,7 @@ function SiteList(props) {
     createSite(false)
     console.log(JSON.stringify(createdSite))
   }
+
   return (
     <div className="container">
       <div className="form-heading">
